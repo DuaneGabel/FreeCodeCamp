@@ -4,12 +4,17 @@
 <title>Random Quote Generator</title>
 <style>
 .container {
+	text-align: center;
+}
+
+.text {
+	font-style: italic;
+	font-family: 'Goudy Old Style', Garamond, 'Big Caslon',
+		'Times New Roman', serif;
 }
 
 h1 {
-	text-shadow: 2px 2px #D0D0D0;
-	font-style: italic;
-	text-align: center;
+	text-shadow: 5px 5px 5px #D0D0D0;
 }
 
 p {
@@ -18,14 +23,46 @@ p {
 	margin: auto;
 	text-align: justify;
 }
+
+button {
+	font-size: 25px;
+	margin-top: 50px;
+	box-shadow: 5px 5px 5px #D0D0D0;
+	background-color: LightBrown;
+	width: 6em;
+	height: 2em;
+	border-radius: 15px;
+}
+
+.panel {
+	margin: auto;
+	font-size: 20px;
+	margin-top: 50px;
+	box-shadow: 10px 10px 10px #D0D0D0;
+	width: 20em;
+	border-radius: 15px;
+	padding: 1em;
+}
+
+.author {
+	padding-top: 1em;
+}
 </style>
 </head>
 <body>
 	<div class="container">
-		<h1>Random Quotes Retold</h1>
-		<p>These are some random quotes I thought might be interesting
+		<h1 class="text">Random Quotes Retold</h1>
+		<p>These are some random quotes I thought might be interesting,
 			that I discovered while working on a recent project. I hope you enjoy
 			them!</p>
+		<button type="button" class="text btn btn-primary btn-xs">New
+			Quote</button>
+
+		<div class="panel panel-default">
+			<div class="panel-body">I will lift up mine eyes unto the
+				hills, from whence cometh my help.</div>
+			<div class="text author panel-body">Psalm 121</div>
+		</div>
 	</div>
 </body>
 </html>

@@ -19,7 +19,7 @@ h1 {
 
 p {
 	font-size: 20px;
-	width: 350px;
+	width: 400px;
 	margin: auto;
 	text-align: justify;
 }
@@ -32,37 +32,41 @@ button {
 	width: 6em;
 	height: 2em;
 	border-radius: 15px;
+	border: 1px solid black;
 }
 
 .panel {
+	text-align: justify;
 	margin: auto;
-	font-size: 20px;
+	font-size: 25px;
 	margin-top: 50px;
-	box-shadow: 10px 10px 10px #D0D0D0;
-	width: 20em;
+	box-shadow: 15px 15px 15px #D0D0D0;
 	border-radius: 15px;
+	border: 1px solid black;
 	padding: 1em;
+	width: 20em;
 }
 
-.author {
+#quoteAuthor {
 	padding-top: 1em;
+	text-align: center;
 }
 </style>
 </head>
-<body>
+<body onload="generateQuote()">
 	<div class="container">
 		<h1 class="text">Random Quotes Retold</h1>
 		<p>These are some random quotes I thought might be interesting,
 			that I discovered while working on a recent project. I hope you enjoy
 			them!</p>
-		<button type="button" class="text btn btn-primary btn-xs">New
-			Quote</button>
+		<button type="button" class="text btn btn-primary btn-xs"
+			onclick="generateQuote()">New Quote</button>
 
 		<div class="panel panel-default">
-			<div class="panel-body">I will lift up mine eyes unto the
-				hills, from whence cometh my help.</div>
-			<div class="text author panel-body">Psalm 121</div>
+			<div id="quoteText" class="panel-body"></div>
+			<div id="quoteAuthor" class="text panel-body"></div>
 		</div>
 	</div>
+	<script src="RandomQuoteGenerator.js"></script>
 </body>
 </html>

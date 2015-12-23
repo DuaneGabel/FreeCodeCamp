@@ -37,9 +37,9 @@
 					<br>
 						<br>
 							<div class="plusMinus">
-								<span onclick="decrement('brkLn')">-  </span>
+								<span onclick="setBreak('decr')">-  </span>
 								<span id="breakLength"></span>
-								<span onclick="increment('brkLn')">  +</span>
+								<span onclick="setBreak('incr')">  +</span>
 							</div>
 						</br>
 					</br>
@@ -50,9 +50,9 @@
 					<br>
 						<br>
 							<div class="plusMinus">
-								<span onclick="decrement('sessLn')">-  </span>
+								<span onclick="setSession('decr')">-  </span>
 								<span id="sessionLength"></span>
-								<span onclick="increment('sessLn')">  +</span>
+								<span onclick="setSession('incr')">  +</span>
 							</div>
 						</br>
 					</br>
@@ -62,15 +62,18 @@
 
 		<div class="row">
 			<div class="col-xs-12 col-md-4 col-md-offset-4">
-			<div class="panel">
-				<h2 onclick="startTimer()">Session
-					<br>
-						<br>
-							<span id="timer"></span>
-						</<br>
-					</<br>
-				</h2>
+				<button type="button"
+						class="roundButton"
+						id="timer"
+						value="stopped"
+						onclick="startTimer()">
+				</button>
 			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12 col-md-4 col-md-offset-4">
+				<button class="resetButton" type="submit">Reset Timer</button>
 			</div>
 		</div>
 

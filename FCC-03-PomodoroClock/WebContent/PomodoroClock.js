@@ -1,20 +1,28 @@
-var sessionLength = 1;
-var breakLength = 1;
+var sessionLength = 25;
+var breakLength = 5;
 var minutes = sessionLength - 1;
 var seconds = 60;
 var interval;
 
+function setDefaults() {
+	sessionLength = 25;
+	breakLength = 5;
+	displayTimer()
+}
+
 function displayTimer() {
 	document.getElementById("timer").innerHTML = "Session<br><br>" + checkTime(sessionLength) + ":00";
+	
 	getBreak();
 	getSession();
 }
 
 function startTimer() {
-/*	if (document.getElementByID("timer").value == "stopped") {
-		// start the timer and change the button value to "started"
-		document.getElementByID("timer").value = "started"
-*/
+	
+	if (document.getElementById("timer").value == "start") {
+		
+		document.getElementById("timer").value = "started";
+		
 		interval = setInterval(function() {
 	
 			if (seconds === 0 && minutes === 0) {
@@ -32,11 +40,11 @@ function startTimer() {
 			}
 		}, 1000);
 	
-/*	} else {
-		// stop the timer and change the button value to "stopped"
-		document.getElementByID("timer").value = "stopped"
+	} else {
 		clearInterval(interval);
-*/
+		document.getElementById("timer").value = "start";
+	}
+
 }
 
 // minutes:seconds formatting function (00:00)
@@ -57,9 +65,9 @@ function getSession() {
 }
 
 function setBreak(incrOrDecr) {
-	if (incrOrDecr == "incr") {
+	if (incrOrDecr === "incr") {
 		breakLength++;
-	} else if (incrOrDecr == "decr" && breakLength > 0) {
+	} else if (incrOrDecr === "decr" && breakLength > 0) {
 		breakLength--;
 	}
 	
@@ -67,39 +75,14 @@ function setBreak(incrOrDecr) {
 }
 
 function setSession(incrOrDecr) {
-	if (incrOrDecr == "incr") {
+	if (incrOrDecr === "incr") {
 		sessionLength++;
-	} else if (incrOrDecr == "decr" && sessionLength > 0) {
+	} else if (incrOrDecr === "decr" && sessionLength > 0) {
 		sessionLength--;
 	}
 	
 	getSession();
 	minutes = sessionLength - 1;
+	seconds = 60;
 	displayTimer();
 }
-
-/*
-function decrement(i) {
-	if (i == "break" && breakLength > 0) {
-		breakLength--;
-		getBreak();
-	} else if (i == "session" && sessionLength > 0) {
-		sessionLength--;
-		getSession();
-	}
-	minutes = sessionLength - 1;
-	displayTimer();
-} 
-
-function increment(i) {
-	if (i == "brkLn") {
-		breakLength++;
-		getBreak();
-	} else if (i == "sessLn") {
-		sessionLength++;
-		getSession();
-	}
-	minutes = sessionLength - 1;
-	displayTimer();
-}
-*/

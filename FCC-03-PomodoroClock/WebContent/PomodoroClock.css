@@ -18,6 +18,12 @@ h1 {
 	font-size: 35px;
 }
 
+.plusMinusButton {
+	background-color: 	#606060;
+	border-width: 0px;
+	font-size: 35px;
+}
+
 .roundButton {
 	height: 300px;
 	width: 300px;

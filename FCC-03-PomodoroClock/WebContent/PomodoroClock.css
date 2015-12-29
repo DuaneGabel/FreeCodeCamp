@@ -1,5 +1,5 @@
 body {
-	background-color: 	#606060;
+	background-color: #606060;
 	color: white;
 	text-align: center;
 }
@@ -19,7 +19,7 @@ h1 {
 }
 
 .plusMinusButton {
-	background-color: 	#606060;
+	background-color: #606060;
 	border-width: 0px;
 	font-size: 35px;
 }
@@ -31,7 +31,7 @@ h1 {
 	border-radius: 50%;
 	border-width: 2px;
 	border-color: #00FF00;
-	background-color: 	#606060;
+	background-color: #606060;
 	font-size: 30px;
 }
 
@@ -40,7 +40,11 @@ h1 {
 	width: 100px;
 	border-style: solid;
 	border-color: #00FF00;
-	background-color: 	#606060;
+	background-color: #606060;
 	margin-top: 50px;
 	border-radius: 50px;
+}
+
+.roundButton:focus, .plusMinusButton:focus {
+	outline: none;
 }

@@ -1,6 +1,6 @@
 var new_index;
-var old_index = -1;
-var oldEqualsNew = true;
+var old_index;
+var oldEqualsNew;
 var quotes = [ "Wherever you go, there you are.",
                "You have to live a lot of your life with yourself, so learn to enjoy your own company.",
                "Best thing about the future is that it comes only one day at a time.",
@@ -28,10 +28,11 @@ var authors = ["Anonymous",
                "Matthew 5:48"];
 
 function generateQuote() {
+	oldEqualsNew = true;
     while (oldEqualsNew) {
     	new_index = Math.floor(Math.random() * 12);
 	    if (old_index === new_index) {
-	        { continue; }
+	    	{ continue; }
     	} else {
         	document.getElementById("quoteText").innerHTML = quotes[new_index];
 	        document.getElementById("quoteAuthor").innerHTML = authors[new_index];

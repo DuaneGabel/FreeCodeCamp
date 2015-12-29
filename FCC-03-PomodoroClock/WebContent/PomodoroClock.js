@@ -2,70 +2,103 @@ var sessionLength;
 var breakLength;
 var minutes;
 var	seconds;
-var secondsPerMinute = 5; // Default
-var length;
+var secondsPerMinute = 60; // Default
 var interval;
 var timerName;
 
 // Initialize defaults to start a standard 25- minute
 // session and a 5-minute break
 function setDefaults() {
-	sessionLength = 2;
-	breakLength = 2;
+	// stop the timer if it's running
+	if (document.getElementById("timer").value === "started") {
+		clearInterval(interval);
+	}
+	document.getElementById("timer").value = "start";
+	sessionLength = 25;
+	breakLength = 5;
 	timerName = "Session";
-	setTime();
 	getSession();
 	getBreak();
+	setTime();
+	getTime();
 }
 
-// Display session length, and if the session is active,
-// also display it within the countdown timer
+// Display session length
 function getSession() {
 	document.getElementById("sessionLength").innerHTML = sessionLength;
-	if (timerName === "Session") {
-		document.getElementById("timer").innerHTML = timerName + "<br><br>" + sessionLength + ":00";
-	}
 }
 
-// Display break length, and if the break is active,
-// also display it within the countdown timer
+// Display break length
 function getBreak() {
 	document.getElementById("breakLength").innerHTML = breakLength;
-	if (timerName === "Break!") {
-		document.getElementById("timer").innerHTML = timerName + "<br><br>" + breakLength + ":00";
-	}
 }
 
-// Adjust session length, and if the session is active,
-// reset the session (both minutes / seconds), display
-// it within the countdown timer, and start over.
-// Do not allow negative session length
-function setSession(incrOrDecr) {
-	if (incrOrDecr === "incr") {
-		sessionLength++;
-	} else if (incrOrDecr === "decr" && sessionLength > 0) {
-		sessionLength--;
-	}
+function getTime() {
+	var length;
 	if (timerName === "Session") {
-		setTime();
+		length = sessionLength;
+	} else if (timerName === "Break!") {
+		length = breakLength;
 	}
-	getSession();
+	document.getElementById("timer").innerHTML = timerName + "<br><br>" + length + ":00";
 }
 
-// Adjust break length, and if the break is active,
-// reset the break (both minutes / seconds), display
-// it within the countdown timer, and start over.
-// Do not allow negative break length
-function setBreak(incrOrDecr) {
-	if (incrOrDecr === "incr") {
-		breakLength++;
-	} else if (incrOrDecr === "decr" && breakLength > 0) {
-		breakLength--;
+/*
+ Adjust session length, and if the session is active AND
+ the timer is stopped, reset the session (both minutes /
+ seconds), display it within the countdown timer, and start over.
+
+ Otherwise allow the session length to be reset without interrupting
+ the break countdown
+
+ Do not allow negative break length
+*/
+function setSession(incrOrDecr) {
+	function incrDecrSess() {
+		if (incrOrDecr === "incr") {
+			sessionLength++;
+		} else if (incrOrDecr === "decr" && sessionLength > 0) {
+			sessionLength--;
+		}
 	}
-	if (timerName === "Break!") {
+	if (timerName !== "Session") {
+		incrDecrSess();
+		getSession();
+	} else if (timerName === "Session" && document.getElementById("timer").value === "start") {
+		incrDecrSess();
+		getSession();
 		setTime();
+		getTime();
 	}
-	getBreak();
+}
+
+/*
+ Adjust break length, and if the break is active AND
+ the timer is stopped, reset the break (both minutes /
+ seconds), display it within the countdown timer, and start over.
+
+ Otherwise allow the break length to be reset without interrupting
+ the session countdown
+
+ Do not allow negative break length
+*/
+function setBreak(incrOrDecr) {
+	function incrDecrBrk() {
+		if (incrOrDecr === "incr") {
+			breakLength++;
+		} else if (incrOrDecr === "decr" && breakLength > 0) {
+			breakLength--;
+		}
+	}
+	if (timerName !== "Break!") {
+		incrDecrBrk();
+		getBreak();
+	} else if (timerName === "Break!" && document.getElementById("timer").value === "start") {
+		incrDecrBrk();
+		getBreak();
+		setTime();
+		getTime();
+	}
 }
 
 // Initialize minutes and seconds
@@ -80,21 +113,24 @@ function setTime() {
 		minutes = 0;
 		seconds = 0;
 	}
-	document.getElementById("timer").value = "start";
 }
 
 // Timer functions
 function startSession() {
 	timerName = "Session";
-	setTime();
 	getSession();
+	setTime();
+	getTime();
+	document.getElementById("timer").value = "start";
 	runTimer();
 }
 
 function startBreak() {
 	timerName = "Break!";
-	setTime();
 	getBreak();
+	setTime();
+	getTime();
+	document.getElementById("timer").value = "start";
 	runTimer();
 }
 
@@ -102,7 +138,6 @@ function runTimer() {
 	// On mouse click, start the timer
 	if (document.getElementById("timer").value === "start") {
 		document.getElementById("timer").value = "started";
-		
 		interval = setInterval(function() {
 			if (seconds === 0 && minutes === 0) {
 				clearInterval(interval);
@@ -136,4 +171,3 @@ function checkTime(i) {
 	}
 	return i;
 }
-

@@ -1,0 +1,16 @@
+.container {
+    width: 50px;
+}
+
+body {
+    text-align: center;
+}
+
+#heading {
+	font-family: cursive;
+	font-size: 20px;
+}
+
+.row {
+    margin-top: 5px;
+}

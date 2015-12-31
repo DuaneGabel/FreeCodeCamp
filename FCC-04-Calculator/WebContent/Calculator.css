@@ -1,16 +1,18 @@
-.container {
-    width: 50px;
-}
-
-body {
+h1 {
+    font-family: cursive;
+    font-size: 20px;
     text-align: center;
 }
 
-#heading {
-	font-family: cursive;
-	font-size: 20px;
+h2 {
+    font-size: 15px;
+    text-align: center;
 }
 
-.row {
-    margin-top: 5px;
+p {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
+

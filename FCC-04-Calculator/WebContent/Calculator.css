@@ -10,9 +10,22 @@ h2 {
 }
 
 p {
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
 }
 
+#display {
+    background: #D0D0D0;
+}
+
+#red-button {
+    background: #B80000;
+}
+
+#black-button {
+    background: black;
+}

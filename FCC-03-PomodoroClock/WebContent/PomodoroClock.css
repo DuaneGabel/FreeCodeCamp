@@ -22,6 +22,7 @@ h1 {
 	background-color: #606060;
 	border-width: 0px;
 	font-size: 35px;
+	cursor: default;
 }
 
 .roundButton {
@@ -33,6 +34,7 @@ h1 {
 	border-color: #00FF00;
 	background-color: #606060;
 	font-size: 30px;
+	cursor: default;
 }
 
 .resetButton {

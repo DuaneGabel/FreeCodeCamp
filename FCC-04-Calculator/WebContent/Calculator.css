@@ -37,10 +37,10 @@ p {
     padding-bottom: 10px;
 }
 
-#red-button {
+.red-button {
     background: #B80000;
 }
 
-#black-button {
+.black-button {
     background: black;
 }

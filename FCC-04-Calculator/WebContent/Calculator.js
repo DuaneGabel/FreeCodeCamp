@@ -6,7 +6,18 @@ function getDisplay() {
     document.getElementById("display").innerHTML = Number(displayNum);
 }
 
-// current number is a string so that numbers selected
+// change color when key clicked
+function activeKey(x) {
+    x.style.background = "#A0A0A0";
+}
+
+// change color back when mouse off
+function inactiveKey(x) {
+//    alert("mouseup");
+    x.style.background = "black";
+}
+
+// current number is initially a string so that numbers selected
 // can be concatenated together before the next operation
 // is pressed
 function setDisplay(num) {
@@ -49,7 +60,12 @@ function operation(op) {
                 runningTotal *= Number(displayNum);
                 break;
             case "/":
-                runningTotal /= Number(displayNum);
+                if (Number(displayNum) === 0) {
+                    alert("Cannot divide by zero!");
+                    allClear();
+                } else {
+                    runningTotal /= Number(displayNum);
+                }
                 break;
         }
     } else {

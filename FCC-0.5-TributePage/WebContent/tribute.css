@@ -1,0 +1,19 @@
+#quote {
+    text-align: center;
+    margin-top: 60px;
+}
+
+#quoteText {
+    font-size: 250%;
+}
+
+#quoteAuthor {
+    font-size: 150%;
+    font-style: italic;
+}
+
+#link {
+    margin-top: 60px;
+    text-align: center;
+    font-size: 200%;
+}

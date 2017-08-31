@@ -1,10 +1,8 @@
-#quote {
+#quote, #link {
     margin-top: 60px;
-    /*margin-left: 300px;*/
-    /*margin-right: 300px;*/
 }
 
-#quoteText {
+#quoteText, #link {
     font-size: 150%;
     
 }
@@ -13,10 +11,4 @@
     margin-top: 30px;
     font-size: 100%;
     font-style: italic;
-}
-
-#link {
-    margin-top: 60px;
-    /*text-align: center;*/
-    font-size: 150%;
 }

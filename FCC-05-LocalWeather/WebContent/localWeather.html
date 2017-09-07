@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="localWeatherApp">
 
 <head>
+
+    <title>Local Weather</title>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,26 +12,49 @@
     <!-- Bootstrap dependencies -->
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
-    
-    <title>Local Weather</title>
 
-    <!--<link rel="stylesheet" type="text/css" href="localWeather.css">-->
+
+    <!--Angular-->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
 
 </head>
 
-<body>
+<body ng-controller="localWeatherCtrl" ng-init="getWeather()">
     <div class="jumbotron text-center">
-        <h1 id="demo">Local Weather</h1>
+        <h3>Local Weather</h3>
     
-        <button onclick="getLocation()">Try It</button>
+     </div>
+
+    <div class="text-center">
+        
+        <!--<h4>Geolocation</h4>-->
+        <!--<h5 ng-model="lat">Latitude: {{ lat }}</h5>-->
+        <!--<h5 ng-model="lon">Longitude: {{ lon }}</h5>-->
 
     </div>
     
-    <script src="localWeather.js"></script>
+     <div class="text-center">
+        
+        <!--<h4>Local Weather</h4>-->
+        <!--<h5 ng-model="todaysDate">Date:  {{ todaysDate | date:'MM-dd-yyyy' }}</h5>-->
+        <h5 ng-model="description">Description:  {{ description }}</h5>
+        <h5 ng-model="temp">Temperature:  {{ temp }}</h5>
+        <h5 ng-model="temp_min">Low:  {{ temp_min }}</h5>
+        <h5 ng-model="temp_max">High:  {{ temp_max }}</h5>
+        <h5 ng-model="humidity">Humidity:  {{ humidity }}</h5>
+        <h5 ng-model="windSpeed">Wind Speed:  {{ windSpeed }}</h5>
+        <h5 ng-model="clouds">Cloudy:  {{ clouds }}</h5>
+        <!--<h5 ng-model="sunrise">Sunrise:  {{ sunrise | date:'hh:mm'}}</h5>-->
+        <!--<h5 ng-model="sunset">Sunset:  {{ sunset | date:'hh:mm'}}</h5>-->
+
+    </div>
     
+    <!--App specific JS and CSS-->
+    <!--<link rel="stylesheet" type="text/css" href="localWeather.css">-->
+    <script src="localWeather.js"></script>
+
 </body>
 
 </html>

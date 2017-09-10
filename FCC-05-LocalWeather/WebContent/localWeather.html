@@ -21,21 +21,13 @@
 
 </head>
 
-<body ng-controller="localWeatherCtrl" ng-init="getWeather()">
+<body ng-controller="localWeatherCtrl" ng-cloak ng-init="getBrowserLatLong()">
     <div class="jumbotron text-center">
         <h3>Local Weather</h3>
     
      </div>
 
-    <div class="text-center">
-        
-        <!--<h4>Geolocation</h4>-->
-        <!--<h5 ng-model="lat">Latitude: {{ lat }}</h5>-->
-        <!--<h5 ng-model="lon">Longitude: {{ lon }}</h5>-->
-
-    </div>
-    
-     <div class="text-center">
+     <div class="text-center" ng-show="tempatureDetails">
         
         <!--<h4>Local Weather</h4>-->
         <!--<h5 ng-model="todaysDate">Date:  {{ todaysDate | date:'MM-dd-yyyy' }}</h5>-->
@@ -46,6 +38,7 @@
         <h5 ng-model="humidity">Humidity:  {{ humidity }}</h5>
         <h5 ng-model="windSpeed">Wind Speed:  {{ windSpeed }}</h5>
         <h5 ng-model="clouds">Cloudy:  {{ clouds }}</h5>
+        <h5 ng-model="rain">Chance of Rain:  {{ rain }}</h5>
         <!--<h5 ng-model="sunrise">Sunrise:  {{ sunrise | date:'hh:mm'}}</h5>-->
         <!--<h5 ng-model="sunset">Sunset:  {{ sunset | date:'hh:mm'}}</h5>-->
 

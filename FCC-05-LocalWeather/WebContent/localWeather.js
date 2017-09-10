@@ -1,8 +1,5 @@
 angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($scope, $http, $q) {
     
-    // don't show weather results until after the API call
-    // $scope.temperatureDetails = false;
-    
     // set default location type
     	$scope.query = {
 			type: ''

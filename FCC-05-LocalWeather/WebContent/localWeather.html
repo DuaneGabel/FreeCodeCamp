@@ -21,16 +21,68 @@
 
 </head>
 
-<body ng-controller="localWeatherCtrl" ng-cloak ng-init="getBrowserLatLong()">
+<!--<body ng-controller="localWeatherCtrl" ng-cloak ng-init="getBrowserLatLong()">-->
+<body ng-controller="localWeatherCtrl" ng-cloak ng-init="clearDetails()">
     <div class="jumbotron text-center">
         <h3>Local Weather</h3>
     
      </div>
 
+	<div class="text-center">
+    	<label>Choose your location</label>
+    	
+     	<div class="row text-center">
+    		<form>
+    			<label class="radio-inline">
+     				<div class="col-md-6">
+    					<input type="radio" name="queryType" ng-model="query.type" value="current" ng-click="clearDetails()"> Current location
+    				</div>
+     				<div class="col-md-3">
+    					<input type="radio" name="queryType" ng-model="query.type" value="userEntered" ng-click="clearDetails()"> Elsewhere:
+    				</div>
+    			</label>
+    		</form>
+    	</div>
+    	
+     	<div class="row text-center">
+     		<div class="col-sm-11 col-md-10">
+				<form>
+					<input
+						type="text" 
+						ng-model="city" 
+						name="city"
+						Placeholder="City"
+						autocomplete="off">
+					<input
+						type="text" 
+						ng-model="state" 
+						name="State"
+						Placeholder="State"
+						autocomplete="off">
+					<p>, or </p>
+					<input
+						type="text" 
+						ng-model="zip" 
+						name="Zip"
+						Placeholder="Zip"
+						autocomplete="off">
+				</form>
+			</div>
+     	</div>
+    	
+     	<div class="row text-center">
+			<div class="col-sm-11 col-md-10">
+				<button  ng-click="getLatLong()" type="button" class="btn">Submit</button>
+			</div>
+     	</div>
+
+	</div>
+					    						    
      <div class="text-center" ng-show="tempatureDetails">
         
         <!--<h4>Local Weather</h4>-->
         <!--<h5 ng-model="todaysDate">Date:  {{ todaysDate | date:'MM-dd-yyyy' }}</h5>-->
+        <h5 ng-model="cityName">City Name:  {{ cityName }}</h5>
         <h5 ng-model="description">Description:  {{ description }}</h5>
         <h5 ng-model="temp">Temperature:  {{ temp }}</h5>
         <h5 ng-model="temp_min">Low:  {{ temp_min }}</h5>

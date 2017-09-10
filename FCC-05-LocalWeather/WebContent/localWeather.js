@@ -1,15 +1,19 @@
-angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($scope, $http, $q) {
+angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($scope, $http) {
     
     // set default location type
     	$scope.query = {
 			type: ''
 	};
+	
+	// don't show the progress spinner, yet
+	$scope.waitingForResults = false;
 
     // functions
     $scope.getLatLong = function(location) {
         
         // reset details
         $scope.temperatureDetails = false;
+        $scope.waitingForResults = true;
         
         if ($scope.query.type === 'current') {
             getBrowserLatLong();
@@ -65,6 +69,7 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
             $scope.sunrise = result.data.sys.sunrise;
             $scope.sunset = result.data.sys.sunset;
             
+            $scope.waitingForResults = false;
             $scope.tempatureDetails = true;
         });
     };

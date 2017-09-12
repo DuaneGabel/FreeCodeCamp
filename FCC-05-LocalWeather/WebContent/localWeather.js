@@ -1,10 +1,11 @@
 angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($scope, $http) {
     
+    // *************************** 
     // Initialization
     // *************************** 
-    // set default location type
-    	$scope.query = {
-			type: ''
+    // location type (current or elswhere)
+	$scope.query = {
+		type: ''
 	};
 
     var cityName = '';
@@ -23,19 +24,22 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
 	$scope.waitingForResults = false;
 	$scope.enterElsewhere = false;
 
+    // *************************** 
     // Functions
     // *************************** 
     // Wrapper function
     $scope.getLatLong = function(location) {
         
-        // reset details each time
+        // reset view each time
         $scope.temperatureDetails = false;
         $scope.waitingForResults = true;
         
+        // if using current position, go ahead and get lat/long
         if ($scope.query.type === 'current') {
             $scope.enterElsewhere = false;
             getBrowserLatLong();
-            
+        
+        // otherwise, wait for entry of city/state or zip before getting lat/long    
         } else if ($scope.query.type === 'userEntered') {
             var address = '';
             
@@ -87,8 +91,10 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
             humidity = result.data.main.humidity,
             windSpeed = result.data.wind.speed,
             
+            // first convert service-provided temp to Fahrenheit
             $scope.convertDegrees();
             
+            // and update the view
             $scope.waitingForResults = false;
             $scope.temperatureDetails = true;
         });
@@ -118,6 +124,7 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
             return Math.round(((temp - 32) * 5) / 9);
         };
         
+        // take given temp and tempType, and then convert both
         if (tempType === 'C') {
             
             tempType = 'F';
@@ -135,10 +142,12 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
             todaysLow = getCelsius(todaysLow);
             
         }
-        
-        populateWeatherDetails();
+
+        // change display on the button
         $scope.tempTypeString = tempType === 'C' ? 'Fahrenheit' : 'Celsius';
 
+        // then populate weather details
+        populateWeatherDetails();
     };
     
     $scope.clearDetails = function() {

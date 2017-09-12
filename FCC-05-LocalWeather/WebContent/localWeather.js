@@ -1,18 +1,30 @@
 angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($scope, $http) {
     
+    // Initialization
+    // *************************** 
     // set default location type
     	$scope.query = {
 			type: ''
 	};
-	
-	// set default temperature type (Celsius, Fahrenheit)
-	$scope.tempType = 'C';
+
+    var cityName = '';
+    var description = '';
+    var currentTemperature = '';
+    var formattedCurrentTemperature = '';
+    var todaysHigh = '';
+    var formattedTodaysHigh = '';
+    var todaysLow = '';
+    var formattedTodaysLow = '';
+    var humidity = '';
+    var windSpeed = '';
+    var tempType = '';
 	
 	// don't show the progress spinner, yet, nor city / state / zip entry
 	$scope.waitingForResults = false;
 	$scope.enterElsewhere = false;
 
     // Functions
+    // *************************** 
     // Wrapper function
     $scope.getLatLong = function(location) {
         
@@ -61,49 +73,83 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
     };
 
     var getWeather = function() {
+    	// set temperature type to Celsius coming back from service
+	    tempType = 'C';
+
         var weatherUrl = 'https://fcc-weather-api.glitch.me/api/current?lat=' + $scope.lat + '&lon=' + $scope.lon;
         
-        $scope.items = [];
-        
         $http.get(weatherUrl).then(function(result) {
-            $scope.items.push(
-                { type: 'City Name', value: result.data.name },
-                { type: 'Description', value: result.data.weather[0].description },
-                { type: 'Current Temperature', value: $scope.convertDegrees(result.data.main.temp) },
-                { type: 'Today\'s High', value: $scope.convertDegrees(result.data.main.temp_max) },
-                { type: 'Today\'s Low', value: $scope.convertDegrees(result.data.main.temp_min) },
-                { type: 'Humidity', value: result.data.main.humidity + '%' },
-                { type: 'Wind Speed', value: result.data.wind.speed + ' mph' }
-            );
+            cityName = result.data.name,
+            description = result.data.weather[0].description ,
+            currentTemperature = result.data.main.temp,
+            todaysHigh = result.data.main.temp_max,
+            todaysLow = result.data.main.temp_min,
+            humidity = result.data.main.humidity,
+            windSpeed = result.data.wind.speed,
+            
+            $scope.convertDegrees();
             
             $scope.waitingForResults = false;
-            $scope.tempatureDetails = true;
+            $scope.temperatureDetails = true;
         });
     };
     
+    var populateWeatherDetails = function() {
+        $scope.items = [];
+        
+        $scope.items.push(
+            { type: 'City Name', value: cityName },
+            { type: 'Description', value: description },
+            { type: 'Current Temperature', value: currentTemperature + '\xB0' + tempType },
+            { type: 'Today\'s High', value: todaysHigh + '\xB0' + tempType },
+            { type: 'Today\'s Low', value: todaysLow + '\xB0' + tempType },
+            { type: 'Humidity', value: humidity + '%' },
+            { type: 'Wind Speed', value: windSpeed + ' mph' }
+        );
+    };
+    
+    $scope.convertDegrees = function() {
+        
+        var getFahrenheit = function(temp) {
+            return Math.round(((temp * 9) / 5) + 32);
+        };
+        
+        var getCelsius = function(temp) {
+            return Math.round(((temp - 32) * 5) / 9);
+        };
+        
+        if (tempType === 'C') {
+            
+            tempType = 'F';
+            
+            currentTemperature = getFahrenheit(currentTemperature);
+            todaysHigh = getFahrenheit(todaysHigh);
+            todaysLow = getFahrenheit(todaysLow);
+            
+        } else if (tempType === 'F') {
+
+            tempType = 'C';
+            
+            currentTemperature = getCelsius(currentTemperature);
+            todaysHigh = getCelsius(todaysHigh);
+            todaysLow = getCelsius(todaysLow);
+            
+        }
+        
+        populateWeatherDetails();
+        $scope.tempTypeString = tempType === 'C' ? 'Fahrenheit' : 'Celsius';
+
+    };
+    
     $scope.clearDetails = function() {
-        $scope.tempatureDetails = false;
-        // $scope.enterElsewhere = false;
+        $scope.temperatureDetails = false;
         $scope.city = '';
         $scope.state = '';
         $scope.zip = '';
     };
     
-    $scope.convertDegrees = function(temperature, type) {
-        if (type = 'C') {
-            type = 'F';
-            return Math.round(((temperature * 9) / 5) + 32) + '\xB0 F';
-            
-        } else if (type = 'F') {
-            type = 'C';
-            return Math.round(((temperature -32) * 5) / 9) + '\xB0 C';
-        }
-
-    };
-    
     $scope.showElsewhere = function() {
         $scope.enterElsewhere = true;
-        // $scope.setFocus();
     };
     
     $scope.setFocus = function() {
@@ -111,9 +157,3 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
     };
 
 });
-
-// // outside Angular scope
-// var setFocus = function() {
-// 	 document.getElementById("cityBox").focus();
-// };
-

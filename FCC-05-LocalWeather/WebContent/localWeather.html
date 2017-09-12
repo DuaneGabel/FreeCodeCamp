@@ -23,82 +23,71 @@
 </head>
 
 <!--<body ng-controller="localWeatherCtrl" ng-cloak ng-init="getBrowserLatLong()">-->
-<body ng-controller="localWeatherCtrl" ng-cloak ng-init="clearDetails()">
-    <div class="jumbotron text-center">
+<body class="container" ng-controller="localWeatherCtrl" ng-cloak ng-init="clearDetails()">
+    <div class="container navbar navbar-default">
         <h3>Local Weather</h3>
-    
-     </div>
+    </div>
 
-	<div class="text-center">
+	<div>
     	<label>Choose your location</label>
     	
-     	<div class="row text-center">
+     	<div class="row">
     		<form>
     			<label class="radio-inline">
-     				<div class="col-md-6">
+     				<div class="col-md-8">
     					<input type="radio" name="queryType" ng-model="query.type" value="current" ng-click="clearDetails(); getLatLong()"> Current location
     				</div>
      				<div class="col-md-3">
-    					<input type="radio" name="queryType" ng-model="query.type" value="userEntered" ng-click="clearDetails()"> Elsewhere:
+    					<input type="radio" name="queryType" ng-model="query.type" value="userEntered" ng-click="clearDetails(); showElsewhere(); setFocus()"> Elsewhere:
     				</div>
     			</label>
     		</form>
     	</div>
     	
-     	<div class="row text-center">
-     		<div class="col-sm-11 col-md-10">
+     	<div class="row" ng-show="enterElsewhere">
+     		<div class="col-md-8 col-md-offset-2">
 				<form>
 					<input
 						type="text" 
 						ng-model="city" 
 						name="city"
-						Placeholder="City"
-						autocomplete="off">
+						Placeholder="Enter City"
+						autocomplete="off"
+						id="cityBox">
 					<input
 						type="text" 
 						ng-model="state" 
 						name="State"
-						Placeholder="State"
+						Placeholder="and State"
 						autocomplete="off">
-					<p>, or </p>
 					<input
 						type="text" 
 						ng-model="zip" 
 						name="Zip"
-						Placeholder="Zip"
+						Placeholder="or Zip"
 						autocomplete="off">
+					<button  ng-click="getLatLong(); clearDetails(); setFocus()" type="button" class="btn">Submit</button>
+					<button  ng-click="convertDegrees()" type="button" class="btn">Change Temp Type</button>
 				</form>
+				
 			</div>
      	</div>
-    	
-     	<div class="row text-center">
-			<div class="col-sm-11 col-md-10">
-				<button  ng-click="getLatLong()" type="button" class="btn">Submit</button>
-			</div>
-     	</div>
-
+     	
 	</div>
 	
-	<div class="text-center">
+	<div>
 	    <i class="fa fa-spinner fa-pulse" ng-show="waitingForResults"></i>
 	</div>
 					    						    
-    <div class="text-center" ng-show="tempatureDetails">
+    <div ng-show="tempatureDetails">
+    	
+    	<table class="table table-bordered table-responsive">
+    		<tr ng-repeat="item in items">
+    			<td>{{ item.type }}</td>
+    			<td>{{ item.value }}</td>
+    		</tr>
+    	</table>
         
-        <!--<h4>Local Weather</h4>-->
-        <!--<h5 ng-model="todaysDate">Date:  {{ todaysDate | date:'MM-dd-yyyy' }}</h5>-->
-        <h5 ng-model="cityName">City Name:  {{ cityName }}</h5>
-        <h5 ng-model="description">Description:  {{ description }}</h5>
-        <h5 ng-model="temp">Temperature:  {{ temp }}</h5>
-        <h5 ng-model="temp_min">Low:  {{ temp_min }}</h5>
-        <h5 ng-model="temp_max">High:  {{ temp_max }}</h5>
-        <h5 ng-model="humidity">Humidity:  {{ humidity }}</h5>
-        <h5 ng-model="windSpeed">Wind Speed:  {{ windSpeed }}</h5>
-        <h5 ng-model="clouds">Cloudy:  {{ clouds }}</h5>
-        <h5 ng-model="rain">Chance of Rain:  {{ rain }}</h5>
-        <!--<h5 ng-model="sunrise">Sunrise:  {{ sunrise | date:'hh:mm'}}</h5>-->
-        <!--<h5 ng-model="sunset">Sunset:  {{ sunset | date:'hh:mm'}}</h5>-->
-
     </div>
     
     <!--App specific JS and CSS-->

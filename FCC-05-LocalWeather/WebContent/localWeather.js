@@ -11,11 +11,8 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
     var cityName = '';
     var description = '';
     var currentTemperature = '';
-    var formattedCurrentTemperature = '';
     var todaysHigh = '';
-    var formattedTodaysHigh = '';
     var todaysLow = '';
-    var formattedTodaysLow = '';
     var humidity = '';
     var windSpeed = '';
     var tempType = '';
@@ -23,6 +20,7 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
 	// don't show the progress spinner, yet, nor city / state / zip entry
 	$scope.waitingForResults = false;
 	$scope.enterElsewhere = false;
+	$scope.showError = false;
 
     // *************************** 
     // Functions
@@ -37,24 +35,36 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
         // if using current position, go ahead and get lat/long
         if ($scope.query.type === 'current') {
             $scope.enterElsewhere = false;
+            $scope.showError = false;
             getBrowserLatLong();
         
         // otherwise, wait for entry of city/state or zip before getting lat/long    
         } else if ($scope.query.type === 'userEntered') {
+            $scope.showError = false;
             var address = '';
             
             if ($scope.city && $scope.state) {
-                address = $scope.city + ', ' + $scope.state;
-            } else if ($scope.zip) {
-                address = $scope.zip;
+                    address = $scope.city + ', ' + $scope.state;
+                } else if ($scope.zip) {
+                    address = $scope.zip;
+                } else {
+                    $scope.errorMessage = "You must enter either a city and state, or zip!"
+                    $scope.showError = true;
+                }
+
+            try {
+                getUserEnteredLatLong(address);
+            } catch(err) {
+                console.log(err);
             }
-            getUserEnteredLatLong(address);
         }
     };
     
     var getBrowserLatLong = function() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(getPosition);
+        } else {
+            alert('Geolocation is not available in this browser!');
         };
         
         function getPosition(position) {
@@ -71,9 +81,15 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
         $http.get(googleUrl).then(function(result) {
             $scope.lat = result.data.results[0].geometry.location.lat;
             $scope.lon = result.data.results[0].geometry.location.lng;
+        
+            if (result.data.status === 'OK') {
+                getWeather();
+            } else {
+                console.log('Google API error: ' + result.data.error_message);
+            }
             
-            getWeather();
         });
+        
     };
 
     var getWeather = function() {
@@ -83,13 +99,14 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
         var weatherUrl = 'https://fcc-weather-api.glitch.me/api/current?lat=' + $scope.lat + '&lon=' + $scope.lon;
         
         $http.get(weatherUrl).then(function(result) {
-            cityName = result.data.name,
-            description = result.data.weather[0].description ,
-            currentTemperature = result.data.main.temp,
-            todaysHigh = result.data.main.temp_max,
-            todaysLow = result.data.main.temp_min,
-            humidity = result.data.main.humidity,
-            windSpeed = result.data.wind.speed,
+            cityName = result.data.name;
+            description = result.data.weather[0].description;
+            currentTemperature = result.data.main.temp;
+            todaysHigh = result.data.main.temp_max;
+            todaysLow = result.data.main.temp_min;
+            humidity = result.data.main.humidity;
+            windSpeed = result.data.wind.speed;
+            $scope.weatherIcon = result.data.weather[0].icon;
             
             // first convert service-provided temp to Fahrenheit
             $scope.convertDegrees();
@@ -152,6 +169,7 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
     
     $scope.clearDetails = function() {
         $scope.temperatureDetails = false;
+    	$scope.waitingForResults = false;
         $scope.city = '';
         $scope.state = '';
         $scope.zip = '';
@@ -161,8 +179,8 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
         $scope.enterElsewhere = true;
     };
     
-    $scope.setFocus = function() {
-    	 document.getElementById("cityBox").focus();
-    };
+    // $scope.setFocus = function() {
+    // 	 document.getElementById("cityBox").focus();
+    // };
 
 });

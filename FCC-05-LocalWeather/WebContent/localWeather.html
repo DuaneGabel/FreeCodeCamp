@@ -24,11 +24,11 @@
 
 <!--<body ng-controller="localWeatherCtrl" ng-cloak ng-init="getBrowserLatLong()">-->
 <body class="container" ng-controller="localWeatherCtrl" ng-cloak ng-init="clearDetails()">
-    <div class="container navbar navbar-default">
+    <div class="container-fluid navbar navbar-default">
         <h3>Local Weather</h3>
     </div>
 
-	<div>
+	<div id="chooseLocation">
     	<label>Choose your location</label>
     	
      	<div class="row">
@@ -37,8 +37,8 @@
      				<div class="col-md-8">
     					<input type="radio" name="queryType" ng-model="query.type" value="current" ng-click="clearDetails(); getLatLong()"> Current location
     				</div>
-     				<div class="col-md-3">
-    					<input type="radio" name="queryType" ng-model="query.type" value="userEntered" ng-click="clearDetails(); showElsewhere(); setFocus()"> Elsewhere:
+     				<div class="col-md-4">
+    					<input type="radio" name="queryType" ng-model="query.type" value="userEntered" ng-click="clearDetails(); showElsewhere()"> Elsewhere:
     				</div>
     			</label>
     		</form>
@@ -66,11 +66,16 @@
 						name="Zip"
 						Placeholder="or Zip"
 						autocomplete="off">
-					<button  ng-click="getLatLong(); clearDetails(); setFocus()" type="button" class="btn">Submit</button>
+					<button  ng-click="getLatLong(); clearDetails()" type="button" class="btn">Submit</button>
 				</form>
 			</div>
-     	</div>
+			
+	     	<div class="col-md-4 col-md-offset-2 alert alert-danger" role="alert" ng-show="showError">
+	     		<strong>{{ errorMessage }}</strong>
+	     	</div>
      	
+     	</div>
+
 	</div>
 	
 	<div>
@@ -79,8 +84,14 @@
 					    						    
     <div ng-show="temperatureDetails">
     	
+		<div id="weatherTable">
+			<img src="{{ weatherIcon }}">
+		</div>
+
+    	<label>Weather Details:</label>
+    	
     	<table class="table table-bordered table-responsive">
-    		<tr ng-repeat="item in items">
+     		<tr ng-repeat="item in items">
     			<td>{{ item.type }}</td>
     			<td>{{ item.value }}</td>
     		</tr>
@@ -91,7 +102,7 @@
     </div>
     
     <!--App specific JS and CSS-->
-    <!--<link rel="stylesheet" type="text/css" href="localWeather.css">-->
+    <link rel="stylesheet" type="text/css" href="localWeather.css">
     <script src="localWeather.js"></script>
 
 </body>

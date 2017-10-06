@@ -70,8 +70,9 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
         function getPosition(position) {
             $scope.lat = position.coords.latitude;
             $scope.lon = position.coords.longitude;
-
-            getWeather();
+            
+            // Attempt to get full formatted City, State, & Country from Google reverse geocoder
+            getFormattedAddress($scope.lat, $scope.lon);
         };
     };
     
@@ -79,6 +80,8 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
         var googleUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&sensor=false';
         
         $http.get(googleUrl).then(function(result) {
+            
+            $scope.formattedAddress = result.data.results[0].formatted_address;
             $scope.lat = result.data.results[0].geometry.location.lat;
             $scope.lon = result.data.results[0].geometry.location.lng;
         
@@ -87,19 +90,37 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
             } else {
                 console.log('Google API error: ' + result.data.error_message);
             }
-            
         });
-        
+    };
+    
+    var getFormattedAddress = function(lat, lon) {
+        var googleUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lon + '&sensor=false';
+        $scope.formattedAddress = '';
+
+        $http.get(googleUrl).then(function(result) {
+            
+            console.log('Reverse geocoder API status: ' + result.data.status);
+            
+            if (result.data.status === 'OK') {
+                $scope.formattedAddress = result.data.results[0].address_components[3].short_name + ', ' + result.data.results[0].address_components[5].short_name + ', ' + result.data.results[0].address_components[6].short_name;
+            }
+            
+            // then get weather details
+            getWeather();
+
+        });
     };
 
     var getWeather = function() {
     	// set temperature type to Celsius coming back from service
+    	
 	    tempType = 'C';
 
         var weatherUrl = 'https://fcc-weather-api.glitch.me/api/current?lat=' + $scope.lat + '&lon=' + $scope.lon;
         
         $http.get(weatherUrl).then(function(result) {
-            cityName = result.data.name;
+
+            cityName = $scope.formattedAddress !== '' ? $scope.formattedAddress : result.data.name;
             description = result.data.weather[0].description;
             currentTemperature = result.data.main.temp;
             todaysHigh = result.data.main.temp_max;
@@ -122,7 +143,7 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
         
         $scope.items.push(
             { type: 'City Name', value: cityName },
-            { type: 'Description', value: description },
+            { type: 'Description', value: toTitleCase(description) },
             { type: 'Current Temperature', value: currentTemperature + '\xB0' + tempType },
             { type: 'Today\'s High', value: todaysHigh + '\xB0' + tempType },
             { type: 'Today\'s Low', value: todaysLow + '\xB0' + tempType },
@@ -173,10 +194,33 @@ angular.module('localWeatherApp', []).controller('localWeatherCtrl', function($s
         $scope.city = '';
         $scope.state = '';
         $scope.zip = '';
+        $scope.formattedAddress = '';
     };
     
     $scope.showElsewhere = function() {
         $scope.enterElsewhere = true;
+    };
+    
+    var toTitleCase = function(str) {
+        var strArray = str.split(" ");
+    
+        var newStr = "";
+        
+        for (var i = 0; i < strArray.length; i++) {
+            for (var j = 0; j < strArray[i].length; j++) {
+                if (j === 0) {
+                    newStr += strArray[i][j].toUpperCase();
+                } else {
+                    newStr += strArray[i][j].toLowerCase();
+                }
+            }
+            
+            if (i !== strArray.length - 1) {
+                newStr += " ";        
+            }
+        }
+        
+        return newStr;
     };
     
     // $scope.setFocus = function() {
